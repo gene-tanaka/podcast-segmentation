@@ -19,4 +19,4 @@ word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
 # 	def __init__(self, init_size):
 		
 
-train_dataset = WikipediaDataSet('../data', word2vec=word2vecModel)
+train_dataset = WikipediaDataSet('./data', word2vec=word2vecModel, folder=True)

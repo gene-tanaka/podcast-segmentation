@@ -1,0 +1,18 @@
+name: podcast_segmentation
+channels:
+  - pytorch
+  - defaults
+dependencies:
+  - python=3.7
+  - numpy
+  - scipy
+  - tqdm
+  - docopt
+  - pytorch
+  - nltk
+  - torchvision
+  - pip
+  - pathlib2
+  - pip:
+    - sentencepiece
+    - sacrebleu
