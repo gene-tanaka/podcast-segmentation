@@ -1,5 +1,11 @@
 import torch
 
+class Model(self):
+	def __init__(self, init_1, hideen_1, init_2,  hidden_2, init_3, hidden_3):
+		self.SentenceRepresentation = SentenceRepresentation(init1, hidden1)
+		self.secondNN = SecondNN(init2, hidden2)
+		self.lastLayer = LastLayer(init3, hidden3)
+
 class SentenceRepresentation(torch.nn.Module):
 	def __init__(self, init_size, hidden_size):
 		super(SegmentationModel, self).__init__()
