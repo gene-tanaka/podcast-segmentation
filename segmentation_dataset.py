@@ -2,7 +2,8 @@ from pathlib2 import Path
 from torch.utils.data import Dataset
 
 class SegmentationDataset(Dataset):
-    def __init__(self, root_dir: str):
+    def __init__(self, root_dir: str, word2Vec):
+        self.word2Vec = word2Vec
         PAD_STR = '<pad>'
         BOUNDARY_STR = '<boundary>'
         self.examples = []
@@ -37,6 +38,15 @@ class SegmentationDataset(Dataset):
     
     def __getitem__(self, idx):
         ret_vals = {}
-        ret_vals['sentences'] = self.examples[idx]
+        sentences = []
         ret_vals['target'] = self.targets[idx]
+        for sentence in self.examples[idx]:
+            sentence = []
+            for word in sentence:
+                if word in self.word2Vec:
+                    sentence.append(self.word2Vec[word].reshape(1, 300))
+                else:
+                    sentence.append(self.word2Vec['UNK'].reshape(1, 300))
+            sentences.append(sentence)
+         ret_vals['sentences'] = sentences
         return ret_vals

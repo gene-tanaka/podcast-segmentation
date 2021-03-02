@@ -1,15 +1,28 @@
 import torch
 
-class Model(self):
-	def __init__(self, init_1, hideen_1, init_2,  hidden_2, init_3, hidden_3):
-		self.SentenceRepresentation = SentenceRepresentation(init1, hidden1)
-		self.secondNN = SecondNN(init2, hidden2)
-		self.lastLayer = LastLayer(init3, hidden3)
+class Model(nn.Module):
+	def __init__(self, hidden=128, num_layers=2):
+		super(Model, self).__init__()
+		self.sentenceRepresentation = SentenceRepresentation(300, 256)
+		self.secondNN = torch.nn.LSTM(input_size=self.SentenceRepresentation.hidden *2, 
+										hidden_size=hidden, 
+										num_layers=num_layers, 
+										dropout=0,
+										bidirectional=True)
+		self.lastLayer = torch.nn.Linear(hidden *2, 2)
+		self.loss = torch.nn.CrossEntropyLoss()
+	def forward(self, batch):
+		encoded_batch = self.sentenceRepresentation(batch)
+		secondNN_output = self.secondNN(encoded_batch)
+		x = self.lastLayer(secondNN_output)
+		return x
+
 
 class SentenceRepresentation(torch.nn.Module):
 	def __init__(self, init_size, hidden_size):
 		super(SegmentationModel, self).__init__()
 		self.init_size = init_size
+		self.hidden = hidden_size
 		#could also consider adding dropout to 
 		self.firstLayer = torch.nn.LSTM(input_size=input_size, 
 										hidden_size=hidden_size, 
@@ -29,29 +42,3 @@ class SentenceRepresentation(torch.nn.Module):
 			maxes[i, :] = torch.max(output[:lengths[i], i, :], 0)[0]
 		
 		return maxes
-
-class SecondNN(torch.nn.Module):
-	def __init__(self, init_size, hidden_size):
-		super(secondNN, self).__init__()
-		self.init_size = init_size
-		#could also consider adding dropout to 
-		self.secondLayer = torch.nn.LSTM(input_size=input_size, 
-										hidden_size=hidden_size, 
-										num_layers=2, 
-										bidirectional=True)
-	def forward(self, input_x):
-		outputs = self.secondLayer(input_x)
-		softmax = torch.nn.Softmax()
-		scores = softmax(output)
-		return scores
-
-class LastLayer(torch.nn.Module):
-	def __init__(self, init_size, hidden_size):
-		#not super sure what the parameters here should be
-		self.fullyConnected = torch.nn.Linear(init_size, init_size)
-	
-	def forward(self, input_x):
-		outputs = self.fullyConnected(input_x)
-		softmax = torch.nn.Softmax()
-		scores = softmax(output)
-		return scores
