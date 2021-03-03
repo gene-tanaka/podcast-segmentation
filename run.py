@@ -130,18 +130,18 @@ def load_vectors(fname):
     data = {}
     for line in fin:
         tokens = line.rstrip().split(' ')
-        data[tokens[0]] = map(float, tokens[1:])
+        data[tokens[0]] = np.array(tokens[1:]).astype(np.float)
     return data
 
 def main():
-	word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-	# word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
+    word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+    # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-	train_dataset = SegmentationDataset('data', word2vecModel)
-	# train_dl = DataLoader(train_dataset)
+    train_dataset = SegmentationDataset('data', word2vecModel)
+    # train_dl = DataLoader(train_dataset)
 
-	model = Model()
-	optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-	train(model, 500, train_dataset, optimizer)
+    model = Model()
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
+    train(model, 500, train_dataset, optimizer)
 
 main()
