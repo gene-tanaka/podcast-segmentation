@@ -96,29 +96,33 @@ def windowdiff(seg1, seg2, k, boundary="1", weighted=False):
     return wd / (len(seg1) - k + 1.0)
 
 def train(model, num_epochs, dataset, optimizer):
-	model.train()
-	total_loss = 0.0
-	epoch_num = 0
-	while epoch_num < num_epochs:
-		with tqdm(desc='Training', total=len(dataset)) as pbar:
-			for data in dataset:
-				pbar.update()
-				model.zero_grad()
-				output = model(data['sentences'])
-				target = data['target']
-				target = target.long()
-				loss = model.loss(output, target)
-				loss.backward()
-				optimizer.step()
-				total_loss += loss
-				pbar.set_description('Training, loss={:.4}'.format(loss))
-	total_loss = total_loss / len(dataset)
-	print("Total loss: " + str(total_loss))
-	model_save_path = 'saved_model'
-	print('save currently the best model to [%s]' % model_save_path, file=sys.stderr)
-	model.save(model_save_path)
-	# also save the optimizers' state
-	torch.save(optimizer.state_dict(), model_save_path + '.optim')
+    model.train()
+    total_loss = 0.0
+    best_loss = float('inf')
+    epoch_num = 0
+    model_save_path = 'saved_model'
+    while epoch_num < num_epochs:
+        with tqdm(desc='Training', total=len(dataset)) as pbar:
+            for data in dataset:
+                pbar.update()
+                model.zero_grad()
+                output = model(data['sentences'])
+                target = data['target']
+                target = target.long()
+                loss = model.loss(output, target)
+                loss.backward()
+                optimizer.step()
+                total_loss += loss
+                pbar.set_description('Training, loss={:.4}'.format(loss))
+
+        total_loss = total_loss / len(dataset)
+        print("Total loss: " + str(total_loss))
+        if total_loss < best_loss:
+            best_loss = total_loss
+            print('save currently the best model to [%s]' % model_save_path, file=sys.stderr)
+            model.save(model_save_path)
+            # also save the optimizers' state
+            torch.save(optimizer.state_dict(), model_save_path + '.optim')
 
 
 '''
@@ -142,6 +146,6 @@ def main():
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 500, train_dataset, optimizer)
+    train(model, 10, train_dataset, optimizer)
 
 main()
