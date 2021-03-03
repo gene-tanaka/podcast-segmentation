@@ -110,8 +110,8 @@ def train(model, num_epochs, dataset, optimizer):
 				loss = model.loss(output, target)
 				loss.backward()
 				optimizer.step()
-				total_loss += loss.data[0]
-				pbar.set_description('Training, loss={:.4}'.format(loss.data[0]))
+				total_loss += loss
+				pbar.set_description('Training, loss={:.4}'.format(loss))
 	total_loss = total_loss / len(dataset)
 	print("Total loss: " + str(total_loss))
 	model_save_path = 'saved_model'
@@ -134,8 +134,8 @@ def load_vectors(fname):
     return data
 
 def main():
-	# word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-	word2vecModel = {"UNK": np.zeros((1,300))}
+	word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+	# word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
 	train_dataset = SegmentationDataset('data', word2vecModel)
 	# train_dl = DataLoader(train_dataset)

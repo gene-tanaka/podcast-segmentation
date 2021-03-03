@@ -17,13 +17,10 @@ class Model(torch.nn.Module):
 	def forward(self, batch):
 		self.sentenceRepresentation = self.sentenceRepresentation.double()
 		encoded_batch, _ = self.sentenceRepresentation(batch)
-		# print("encoded_batch: {}".format(encoded_batch.shape))
 		self.secondNN = self.secondNN.double()
 		secondNN_output, _ = self.secondNN(encoded_batch)
-		# print("secondNN_output: {}".format(secondNN_output.shape))
 		self.lastLayer = self.lastLayer.double()
 		x = self.lastLayer(secondNN_output)
-		# print("x: {}".format(x.shape))
 		return torch.squeeze(x)
 
 
@@ -42,22 +39,7 @@ class SentenceRepresentation(torch.nn.Module):
 	def forward(self, input_x):
 		self.firstLayer = self.firstLayer.double()
 		output = self.firstLayer(input_x.double())
-		
-		# padded_output, lengths = pad_packed_sequence(output)
-		# batch_size = 5
-		# maxes = Variable((torch.zeros(batch_size, padded_output.size(2))))
-		# for i in range(batch_size):
-		# 	maxes[i, :] = torch.max(output[:lengths[i], i, :], 0)[0]
-		
-		# return maxes
-		# return torch.max(output)
-		return output
+		output_mean = torch.mean(output[0], dim=1) # also try torch.max
+		output_mean = torch.unsqueeze(output_mean, dim=1)
 
-	# def max_pooling(self, output, batch_size):
-	# 	'''This function was adapted from https://github.com/koomri/text-segmentation/blob/874d6ef3ca0e402709b70924608d0894be9a93e1/models/max_sentence_embedding.py
-	# 	'''
-	# 	maxes = Variable((torch.zeros(batch_size, output.size(2))))
-	# 	for i in range(batch_size):
-	# 		maxes[i, :] = torch.max(output[:lengths[i], i, :], 0)[0]
-		
-	# 	return maxes
+		return (output_mean, output[1])
