@@ -95,6 +95,9 @@ def windowdiff(seg1, seg2, k, boundary="1", weighted=False):
             wd += min(1, ndiff)
     return wd / (len(seg1) - k + 1.0)
 
+def validate(model, dataset):
+    pass
+
 def train(model, num_epochs, dataset, optimizer):
     model.train()
     total_loss = 0.0
@@ -120,7 +123,8 @@ def train(model, num_epochs, dataset, optimizer):
         if total_loss < best_loss:
             best_loss = total_loss
             print('save currently the best model to [%s]' % model_save_path, file=sys.stderr)
-            model.save(model_save_path)
+            # model.save(model_save_path)
+            torch.save(model, model_save_path)
             # also save the optimizers' state
             torch.save(optimizer.state_dict(), model_save_path + '.optim')
 
