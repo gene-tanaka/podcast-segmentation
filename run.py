@@ -2,8 +2,10 @@ from segmentation_dataset import SegmentationDataset
 from model import Model
 import io
 import torch
+from torch.utils.data import DataLoader
 from tqdm import tqdm
 import sys
+import numpy as np
 
 '''
 Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
@@ -102,8 +104,9 @@ def train(model, num_epochs, dataset, optimizer):
 				pbar.update()
 				model.zero_grad()
 				output = model(data['sentences'])
+				# print(output.shape)
 				target = data['target']
-				loss = model.criterion(output, target)
+				loss = model.loss(output, target)
 				loss.backward()
 				optimizer.step()
 				total_loss += loss.data[0]
@@ -130,9 +133,11 @@ def load_vectors(fname):
     return data
 
 def main():
-	word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+	# word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+	word2vecModel = {"UNK": np.zeros((1,300))}
 
 	train_dataset = SegmentationDataset('data', word2vecModel)
+	# train_dl = DataLoader(train_dataset)
 
 	model = Model()
 	optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
