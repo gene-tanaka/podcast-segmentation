@@ -11,7 +11,7 @@ class Model(torch.nn.Module):
 										num_layers=num_layers, 
 										dropout=0,
 										bidirectional=True)
-		self.lastLayer = torch.nn.Linear(hidden * 2, 1)
+		self.lastLayer = torch.nn.Linear(hidden * 2, 2)
 		self.loss = torch.nn.CrossEntropyLoss()
 
 	def forward(self, batch):

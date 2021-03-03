@@ -47,7 +47,6 @@ class SegmentationDataset(Dataset):
         for sentence in self.examples[idx]:
             sentence_embedding = []
             for word in sentence.split(' '):
-                # print(word)
                 if word in self.word2Vec:
                     sentence_embedding.append(torch.from_numpy(self.word2Vec[word].reshape(1, 300)))
                 else:
@@ -55,13 +54,5 @@ class SegmentationDataset(Dataset):
             sentence_embedding += [torch.zeros(1,300)]*(self.max_len_sentence - len(sentence_embedding))
             sentence_tensors.append(torch.stack(sentence_embedding))
 
-            # print('New sentences')
-            # print()
-        # data = [torch.nn.functional.pad(x, pad=(0, self.max_len_sentence - x.numel()), mode='constant', value=0) for x in sentence_tensors]
-        # ret_vals['sentences'] = torch.stack(data)
-
         ret_vals['sentences'] = torch.squeeze(torch.stack(sentence_tensors, dim=0))
-        # print(ret_vals['sentences'].shape)
         return ret_vals
-
-        # return data, self.targets[idx]

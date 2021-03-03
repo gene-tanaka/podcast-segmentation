@@ -3,6 +3,7 @@ from model import Model
 import io
 import torch
 from torch.utils.data import DataLoader
+from torch.autograd import Variable
 from tqdm import tqdm
 import sys
 import numpy as np
@@ -104,8 +105,8 @@ def train(model, num_epochs, dataset, optimizer):
 				pbar.update()
 				model.zero_grad()
 				output = model(data['sentences'])
-				# print(output.shape)
 				target = data['target']
+				target = target.long()
 				loss = model.loss(output, target)
 				loss.backward()
 				optimizer.step()
