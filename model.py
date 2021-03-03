@@ -1,16 +1,18 @@
 import torch
+from torch.autograd import Variable
 
-class Model(nn.Module):
+class Model(torch.nn.Module):
 	def __init__(self, hidden=128, num_layers=2):
 		super(Model, self).__init__()
-		self.sentenceRepresentation = SentenceRepresentation(300, 256)
-		self.secondNN = torch.nn.LSTM(input_size=self.SentenceRepresentation.hidden *2, 
+		self.sentenceRepresentation = SentenceRepresentation(300, 256, 2)
+		self.secondNN = torch.nn.LSTM(input_size=self.sentenceRepresentation.hidden *2, 
 										hidden_size=hidden, 
 										num_layers=num_layers, 
 										dropout=0,
 										bidirectional=True)
 		self.lastLayer = torch.nn.Linear(hidden *2, 2)
 		self.loss = torch.nn.CrossEntropyLoss()
+
 	def forward(self, batch):
 		encoded_batch = self.sentenceRepresentation(batch)
 		secondNN_output = self.secondNN(encoded_batch)
@@ -19,14 +21,14 @@ class Model(nn.Module):
 
 
 class SentenceRepresentation(torch.nn.Module):
-	def __init__(self, init_size, hidden_size):
-		super(SegmentationModel, self).__init__()
-		self.init_size = init_size
+	def __init__(self, input_size, hidden_size, num_layers):
+		super(SentenceRepresentation, self).__init__()
+		self.input_size = input_size
 		self.hidden = hidden_size
 		#could also consider adding dropout to 
 		self.firstLayer = torch.nn.LSTM(input_size=input_size, 
 										hidden_size=hidden_size, 
-										num_layers=2, 
+										num_layers=num_layers, 
 										bidirectional=True)
 	def forward(self, input_x):
 		output = self.firstLayer(input_x)

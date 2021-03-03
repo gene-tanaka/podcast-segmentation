@@ -48,5 +48,5 @@ class SegmentationDataset(Dataset):
                 else:
                     sentence.append(self.word2Vec['UNK'].reshape(1, 300))
             sentences.append(sentence)
-         ret_vals['sentences'] = sentences
+        ret_vals['sentences'] = sentences
         return ret_vals
