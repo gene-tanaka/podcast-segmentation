@@ -99,9 +99,9 @@ def train(model, num_epochs, dataset, optimizer):
     model.train()
     total_loss = 0.0
     best_loss = float('inf')
-    epoch_num = 0
     model_save_path = 'saved_model'
-    while epoch_num < num_epochs:
+    for i in range(num_epochs):
+        print("Epoch {}:".format(i + 1))
         with tqdm(desc='Training', total=len(dataset)) as pbar:
             for data in dataset:
                 pbar.update()
