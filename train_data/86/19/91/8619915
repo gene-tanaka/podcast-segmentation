@@ -1,0 +1,26 @@
+========,1,preface.
+========,2,Encoding and decoding.
+========,3,Use.
+Looking up a character given a number is straightforward: page, row, column.
+However, looking up a number given a character is more difficult, as it requires analyzing the character.
+The four corner method was developed in the 1920s to allow people to more easily look up characters by the shape, and remains in use today as a Chinese input method for computers.
+========,2,History.
+The first telegraph code for Chinese was brought into use soon after the Great Northern Telegraph Company ( / Dàběi Diànbào Gōngsī) introduced telegraphy to China in 1871.
+Septime Auguste Viguier, a Frenchman and customs officer in Shanghai, published a codebook (Viguier 1872), succeeding Danish astronomer Hans Carl Frederik Christian Schjellerup’s earlier work.
+In consideration of the former code’s insufficiency and disorder of characters, ( / Zhèng Guānyīng) compiled a new codebook in 1881.
+It remained in effect until the Ministry of Transportation and Communications printed a new book in 1929.
+In 1933, a supplement was added to the book.
+After the establishment of the People’s Republic of China in 1949, the codebook forked into two different versions, due to revisions made in the Mainland China and Taiwan independently from each other.
+The Mainland version, the "Standard Telegraph Codebook," adopted the simplified Chinese characters in 1981.
+========,2,Application.
+The Chinese telegraph code can be used for a Chinese input method for computers.
+Ordinary computer users today hardly master it because it needs a lot of rote memorization.
+However, the related four corner method, which allows one to look up characters by shape, is used.
+The Hong Kong residents’ identification cards have the Chinese telegraph code for the holder’s Chinese name (Immigration Department of Hong Kong 2006).
+Business forms provided by the government and corporations in Hong Kong often require filling out telegraph codes for Chinese names.
+The codes help inputting Chinese characters to a computer.
+Chinese telegraph code is used extensively in law enforcement investigations worldwide that involve ethnic Chinese subjects where variant phonetic spellings of Chinese names can create confusion.
+Dialectical differences (Mr. Wu in Mandarin becomes Mr. Ng in Cantonese) and differing romanization systems (Mr. Xiao in the Hanyu pinyin system, and Mr. Hsiao in the Wade Giles system) can create serious problems for investigators, but can be remedied by application of Chinese telegraph code.
+For instance, investigators following a subject in Taiwan named Hsiao Ai-Kuo might not know this is the same person known in mainland China as Xiao Aiguo and Hong Kong as Siu Oi-Kwok until codes are checked for the actual Chinese characters to determine all match as CTC: 5618/1947/0948 for 萧爱国 (simplified) / 蕭愛國 (traditional).
+Chinese telegraph code is also used on occasion in U.S. and Australian Immigration documents.
+For example, the DS-230 form for K1/K2 visa applicants requires the telegraph code of the applicant's name (as of 8 March 2009).

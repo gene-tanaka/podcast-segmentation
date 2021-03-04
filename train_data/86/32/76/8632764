@@ -1,0 +1,26 @@
+========,1,preface.
+Samsung SCH-U520 is a phone released on December 7, 2006 by the former U.S. wireless operator Alltel Wireless.
+The phone was the first phone to support Alltel's Axcess Mobile Guide service.
+The service allows customers to hear voice turn-by-turn navigation, view maps, find locations, plan trips and more.
+========,2,Features and services.
+The "u520" device allows users to watch TV, listen to the radio, and access podcasts.
+The phone has a 1.3-megapixel camera, video capture and playback, and what in the U.S. in 2006 was a high-resolution display for a mobile device.
+It is the first Alltel phone to support the A2DP Bluetooth profile, which allows customers to connect to a stereo Bluetooth headset and stream their .mp3 music through a stereo headset.
+This phone is also the first Alltel phone to offer Celltop, a widget-oriented service that allows users to customize their phone through the use of "gadgets" similar to Apple's Dashboard or Yahoo Widgets.
+The "cells" are scrollable and customizable for weather, stocks, sports results and similar information.
+The Celltop service uses a separate mobile application that then provides access to "cells".
+While the app is easy to navigate between "cells", they are loaded each time when moving or returning to them; and at each load of a "cell", Alltel charges for one minute of air time, which also applies for the message inbox and the call log of the phone.
+========,2,Other information.
+This phone was delayed multiple times over the months leading up to its release due to software issues.
+It does not currently have Bluetooth OBEX File Transfer capabilities.
+It is yet unknown, if and when this will be made available through a software upgrade or hack.
+MP3 files on the MicroSD card cannot be used as ringtones.
+MP3 files can be played from the MicroSD card, but one can't copy songs from the microSD card to the phone, and the card must be inside to enable music playback.
+The phone does not have customizable ringer profiles.
+To silence the phone fully (not just the ringer), one must hold down the # key.
+Holding down the outer volume key will only silence the ringer.
+Users have had limited success with transferring images and files to the phone with BitPim, which requires a data cable.
+Although it is unclear whether any great progress has been made, it is known that it's possible to write to the phone's internal memory but not immediately use the files written.
+After writing MP3 files to the 18067 folder (BREW->MOD->18067) and rebooting the phone, the files can be used as ringtones, if the Msinfo.db file is manually re-written by changing the file entry generated in Msinfo.db from "/ff/brew/mod/sample file.mp3|0|0" to "/ff/brew/mod/sample file.mp3|0|5" using a text editor (such as WordPad), and then copied to the phone.
+See further information at jmaxxz.com on using BitPim and Samsung SCH-u520.
+In addition to the .jpg format used as image files on "u520", the phone also recognizes .gif images (including animated .gif), and these images (added through BitPim or to a microSD card) can be used as wallpapers with the same procedure detailed on this page.

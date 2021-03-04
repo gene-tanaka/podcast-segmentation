@@ -94,7 +94,7 @@ def main():
     word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
     # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    train_path = 'wiki_727/dev'
+    train_path = 'train_data'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
     # train_dl = DataLoader(train_dataset)
 

@@ -1,0 +1,75 @@
+========,1,preface.
+The 1993 Maize & Blue solar car was built by the University of Michigan Solar Car Team during the period from 1990 to 1993.
+The car was raced in two races.
+The car won a national championship in Sunrayce 93, the predecessor race to the North American Solar Challenge.
+It then went on to finish 11th in the 1993 World Solar Challenge.
+Maize & Blue is now part of the permanent display at the Museum of Science and Industry in Chicago, Illinois.
+The car had an evolutionary design descended from the General Motors Sunraycer and the University of Michigan's first generation car, Sunrunner.
+The car is considered an early example of and demonstration platform for energy efficient automobile design.
+========,2,Team.
+The University of Michigan Solar Car Team was founded in 1989 and has been in continuous existence since.
+The team, composed of University graduate and undergraduate students as well as faculty advisers has competed in many major races including the World Solar Challenge and the North American Solar Challenge.
+The team that raced in 1993 was the second generation "Maize & Blue" team (team tradition dictates that each team names their car and that team is known by the name of their car).
+The Maize & Blue team was formally established in October 1990 and completed in December 1993.
+Over a unique three-year period for the team, they designed the car, built a prototype chassis, tested the prototype, built the race vehicle and then tested that vehicle in preparation for the two races.
+The team was founded by a few individuals and grew to its peak of several hundred students from all academic disciplines.
+During design and construction, the team was at its largest in numbers.
+During testing and the actual races, the team shrunk to a core group dubbed the "race crew" composed of approximately 30 students and advisers.
+Over the course of the project the team included at least 260 student members (see list of known team members below).
+Note that not all team members participated for the duration of the project (more than 3 years) or contributed the same amount of time and effort.
+One team member of note is Larry Page, seen at the top left of the photo at right, co-founder of Google, who participated in the early phase of the project but did not play a significant role in the final phases.
+In total approximately 70,000 hours of student labor were invested in the project.
+========,2,Design.
+Maize & Blue combined technology typically used in the aerospace, bicycle, alternative energy and automotive industries.
+Unlike typical race cars, Maize & Blue was designed with severe energy constraints imposed by the race regulations.
+These rules limited the energy to only that collected from solar radiation and as a result optimizing the design to account for aerodynamic drag, vehicle weight, rolling resistance and electrical efficiency were paramount.
+Conventional thinking had to be challenged, for example, rather than a conventional automobile seat which would weigh tens of pounds, Maize & Blue employed a nylon mesh seat combined with a five-point harness that weighed less than 3 pounds.
+One of the cutting edge, at the time, processes that the team employed in designing Maize & Blue was computer aided design.
+CAD was used to design almost all of the car using Dassault Systems' CATIA and then modeling the physical characteristics using SDRC I-DEAS and other programs most running on some IBM RS/6000 Unix workstations donated by team sponsor IBM.
+At the time, CATIA was being used to design the Boeing 777, the first commercial airplane fully designed using CAD.
+Initially several hand built foam quarter scale models were constructed and tested in the University of Michigan's subsonic low turbulence 5' x 7' wind tunnel.
+This testing was instrumental in determining the ultimate vehicle configuration.
+Once finalized, the body of the car was NC milled in quarter scale from the CATIA model and verified in wind tunnel testing.
+On May 8, 1993, Maize & Blue was tested in a full scale wind tunnel at Lockheed's facility in Atlanta, GA.
+========,2,Fundraising.
+Obtaining cash and in-kind donations was critical to the completion of Maize & Blue.
+Early on in the project, the team created a dedicated group focused on raising funds.
+Team sponsors ranged from the University of Michigan itself to corporate sponsors and university alumni.
+In total, there were hundreds of sponsors who contributed to the project.
+Corporate sponsors included Ford Motor Company, IBM, Northwest Airlines, General Motors, 3M, Magnetek, TRW, Monroe, BASF, Dana Holding Corporation and many others.
+Among the individual alumni sponsors, University of Michigan alumni Charles Hutchins stood out as a major contributor.
+========,2,Testing.
+Component, system and vehicle testing was a continual process throughout the project and began very early on in early 1991.
+An initial vehicle design for Maize & Blue had a three-wheel configuration with one wheel in front which afforded significantly improved aerodynamics but introduced handling concerns.
+In 1991, the team built a "test buck" which was used to evaluate the handling characteristics of the tricycle configuration.
+As a result of these tests, the design was abandoned in favor of a more conventional, and more stable, four-wheel configuration.
+In early 1992, the team constructed a prototype chassis based on the final vehicle design for Maize & Blue.
+This prototype chassis was tested in excess of 1,000 miles on closed courses, primarily the Michigan International Speedway in Brooklyn, Michigan.
+A final round of vehicle testing was conducted in San Angelo, Texas, at the Goodyear Proving Grounds and on nearby roads.
+Also, the team completed three days of testing on the actual race route the week prior to the start of the race (primarily to get a feel for the actual route and traffic patterns).
+========,2,Sunrayce 93.
+There were three qualifiers for Sunrayce 93; the first two several months prior to the race start and the third "last chance" qualifier held in the weeks before the actual race start.
+The qualifiers were used to determine that the vehicles met all of the race regulations and also to determine the starting positions.
+Maize & Blue completed the qualifier held at the Indianapolis Motor Speedway and qualified to start in the 10th position.
+The race was held over seven days from June 20–26, 1993.
+The race began at the recently opened Ballpark in Arlington (now known as Ameriquest Field) in Arlington, Texas and finished at the Minnesota Zoo in Minneapolis, Minnesota.
+By the end of the first race day, Maize & Blue had moved from 10th into 1st place, just a few minutes ahead of the second place car from Cal Poly Pomona.
+Pre-race favorite Cal State LA suffered debilitating electrical failures on day 1 putting them out of contention for the remainder of the race.
+Over the next three days, the team jockeyed for position at one point falling behind first place by as much as 20 minutes, primarily due to two penalties levied by race officials for violation of traffic rules.
+On day 5 of the race, the weather forecast called for rain and overcast conditions for most of the day.
+Maize & Blue was the only car to finish that leg of the race under its own power (the Iowa State University car finished ahead of Michigan, but incurred a 10-hour penalty for replacing their battery pack at the start of the day).
+On day 5, the Michigan team accumulated a 90-minute lead over the next fastest car.
+Days 6 and 7 were uneventful with Maize & Blue maintaining its lead and finishing in first place overall followed by Cal Poly Pomona in second and Cal State LA in third.
+Maize & Blue finished with an average speed of 27.29 mph over the 1100-mile course edging out the second place car by 90 minutes.
+The victory gave Michigan its second consecutive national championship in solar car racing.
+========,2,1993 World Solar Challenge.
+Between Sunrayce 93 and the 1993 World Solar Challenge, the team made many changes to Maize & Blue, the two most important being replacing the lead acid battery pack with an equivalent capacity silver-zinc pack which resulted in a significant weight savings and the other being replacing about 40% of the solar cells with high-powered "Green Cells" produced specially for the team by Dr. Martin Green at the University of New South Wales.
+Unfortunately, as a result of an assembly flaw during the encapsulation process the new cells were unable to produce peak power output resulting in "lower" total array power.
+There were other minor changes to the vehicle designed to reduce weight or aerodynamic drag (the most notable with the removal of all decals except those required by race officials).
+Maize & Blue finished in 11th place in the 1993 World Solar Challenge.
+Honda won the 1993 World Solar Challenge followed by the team from Biel University.
+Maize & Blue finished the race ahead of the 1990 University of Michigan Sunrunner's record of 5 days, but that was not enough for a top finish.
+========,2,Post racing.
+After the two races, the team set about finding a permanent home for its car, Maize & Blue.
+At the conclusion of a several month process, the car was donated and accepted into the permanent display at the Museum of Science and Industry in Chicago, where it now resides as part of its Transportation Zone exhibit.
+Beginning in early 1994, the Maize & Blue team began the transfer and hand over to the third-generation team and thus concluded the project.

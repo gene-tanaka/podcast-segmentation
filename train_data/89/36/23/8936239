@@ -1,0 +1,61 @@
+========,1,preface.
+In eukaryotic cells, an aggresome refers to an aggregation of misfolded proteins in the cell, formed when the protein-degradation system of the cell is overwhelmed.
+Aggresome formation is a highly regulated process which possibly serves to organize misfolded proteins into a single location.
+========,2,Biogenesis.
+Correct folding requires proteins to assume one particular structure from a constellation of possible but incorrect conformations.
+The failure of polypeptides to adopt their proper structure is a major threat to cell function and viability.
+Consequently, elaborate systems have evolved to protect cells from the deleterious effects of misfolded proteins.
+Cells mainly deploy three mechanisms to counteract misfolded proteins: up-regulating chaperones to assist protein refolding, proteolytic degradation of the misfolded/damaged proteins involving ubiquitin–proteasome and autophagy–lysosome systems, and formation of detergent-insoluble aggresomes by transporting the misfolded proteins along microtubules to a region near the nucleus.
+Intracellular deposition of misfolded protein aggregates into ubiquitin-rich cytoplasmic inclusions is linked to the pathogenesis of many diseases.
+Functional blockade of either degradative system leads to an enhanced aggresome formation.
+Why these aggregates form despite the existence of cellular machinery to recognize and degrade misfolded protein, and how they are delivered to cytoplasmic inclusions, are not known.
+Aggresome formation is accompanied by redistribution of the intermediate filament protein vimentin to form a cage surrounding a pericentriolar core of aggregated, ubiquitinated protein.
+Disruption of microtubules blocks the formation of aggresomes.
+Similarly, inhibition of proteasome function also prevents the degradation of unassembled presenilin-1 molecules leading to their aggregation and deposition in aggresomes.
+Aggresome formation is a general response of cells which occurs when the capacity of the proteasome is exceeded by the production of aggregation-prone misfolded proteins.
+Typically, an aggresome forms in response to a cellular stress which generates a large amount of misfolded or partially denatured protein: hyperthermia, overexpression of an insoluble or mutant protein, etc.
+The formation of the aggresome is largely believed to be a protective response, sequestering potentially cytotoxic aggregates and also acting as a staging center for eventual autophagic clearance from the cell.
+An aggresome forms around the microtubule organizing center in eukaryotic cells, adjacent to or enveloping the cell's centrosomes.
+Polyubiquitination tags the protein for retrograde transport via HDAC6 binding and microtubule-based motor protein, dynein.
+Moreover, substrates can also be targeted to the aggresome by a ubiquitin-independent pathway mediated by the stress-induced co-chaperone BAG3 (Bcl-2-associated athanogene 3), which transfers misfolded protein substrates bound to HSP70 (heat-shock protein 70) directly on to the microtubule motor dynein.
+The protein aggregate is then transported along the microtubule and unloaded via p97 forming the aggresome.
+Mediators such as p62 are believed to be involved in aggresome formation in sequestering omega-somes, which bind and increase the size of the aggresome.
+The aggresome is eventually targeted for autophagic clearance for the cell.
+Some pathological proteins, such as alpha-synuclein, cannot be degraded and cause the aggresomes to form inclusion bodies (in Parkinsons Disease, Lewy bodies) which contribute to neuronal dysfunction and death.
+========,2,Triggering aggresome formation.
+Abnormal polypeptides that escape proteasome-dependent degradation and aggregate in cytosol can be transported via microtubules to an aggresome, a recently discovered organelle where aggregated proteins are stored or degraded by autophagy.
+Synphilin 1, a protein implicated in Parkinson disease,was used as a model to study mechanisms of aggresome formation.
+When expressed in naïve HEK293 cells, synphilin 1 forms multiple small highly mobile aggregates.
+However, proteasome or Hsp90 inhibition rapidly triggered their translocation into the aggresome, and surprisingly, this response was independent on the expression level of synphilin 1.
+Therefore, aggresome formation, but not aggregation of synphilin 1, represents a special cellular response to a failure of the proteasome/chaperone machinery.
+Importantly, translocation to aggresomes required a special aggresome-targeting signal within the sequence of synphilin 1, an ankyrin-like repeat domain.
+On the other hand, formation of multiple small aggregates required an entirely different segment within synphilin 1, indicating that aggregation and aggresome formation determinants can be separated genetically.
+Furthermore, substitution of the ankyrin-like repeat in synphilin 1 with an aggresome-targeting signal from huntingtin was sufficient for aggresome formation upon inhibition of the proteasome.
+Analogously, attachment of the ankyrin-like repeat to a huntingtin fragment lacking its aggresome-targeting signal promoted its transport to aggresomes.
+These findings indicate the existence of transferable signals that target aggregation-prone polypeptides to aggresomes.
+========,2,Human disease.
+Accumulation of misfolded proteins in proteinaceous inclusions is common to many age-related neurodegenerative diseases, including Parkinson's disease, Alzheimer's disease, Huntington's disease, and amyotrophic lateral sclerosis.
+In cultured cells, when the production of misfolded proteins exceeds the capacity of the chaperone refolding system and the ubiquitin-proteasome degradation pathway, misfolded proteins are actively transported to a cytoplasmic juxtanuclear structure called an aggresome.
+Whether aggresomes are benevolent or noxious is unknown, but they are of particular interest because of the appearance of similar inclusions in protein deposition diseases.
+Evidence shows that aggresomes serve a cytoprotective function and are associated with accelerated turnover of mutant proteins.
+Experiments show that mutant androgen receptor (AR), the protein responsible for X-linked spinobulbar muscular atrophy, forms insoluble aggregates and is toxic to cultured cells.
+Mutant AR was also found to form aggresomes in a process distinct from aggregation.
+Molecular and pharmacological interventions were used to disrupt aggresome formation, revealing their cytoprotective function.
+Aggresome-forming proteins were found to have an accelerated rate of turnover, and this turnover was slowed by inhibition of aggresome formation.
+Finally, it is shown that aggresome-forming proteins become membrane-bound and associate with lysosomal structures.
+Together, these findings suggest that aggresomes are cytoprotective, serving as cytoplasmic recruitment centers to facilitate degradation of toxic proteins.
+========,3,Proteins implicated in aggresome formation.
+Histone deacetylase 6 is the protein that, in the deacetylase adaptor protein function, forms Lewy bodies (the regular wild-type protein localized to inclusion bodies).
+No mutation associated with disease has been linked to this protein.
+Parkin is the protein that, in the protein ligase function, forms Lewy bodies (the regular wild-type protein localized to inclusion bodies).
+Parkinson's disease has been linked to this protein when there is a protein.
+Ataxin-3 is the protein that, in the deubiquitinating enzyme function, forms SCA type-1 and 2 DRPLA intranuclear inclusions (the regular wild-type protein localized to inclusion bodies).
+SCA type-3 has been linked to this protein when there is a protein.
+Dynein motor complex is the protein that, in the retrograde microtubule motor function, forms an unknown protein (the regular wild-type protein localized to inclusion bodies).
+Motor neuron degeneration has been linked to this protein when there is a protein.
+Ubiquilin-1 is the protein that, in the protein turnover, intracellular trafficking function, forms Lewy bodies and neurofibrillary tangles (the regular wild-type protein localized to inclusion bodies).
+Alzheimer’s disease (potential risk factor) has been linked to this protein when there is a protein.
+========,3,Cystic fibrosis.
+Cystic fibrosis transmembrane conductance regulator (CFTR) is an inefficiently folded integral membrane protein that is degraded by the cytoplasmic ubiquitin-proteasome pathway.
+Overexpression or inhibition of proteasome activity in transfected human embryonic kidney or Chinese hamster ovary cells leads to the accumulation of stable, high molecular weight, detergent-insoluble, multi-ubiquitinated forms of CFTR.
+Undergraded CFTR molecules accumulate at a distinct pericentriolar aggresome.
