@@ -87,7 +87,7 @@ def validate(model, dataset):
             output_argmax = torch.argmax(output_softmax, dim=1)
             total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy(), 5)
             total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy(), 5)
-    return total_pk, total_windowdiff
+    return total_pk / len(dataset), total_windowdiff / len(dataset)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
     model.train()
