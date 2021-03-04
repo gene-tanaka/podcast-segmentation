@@ -11,7 +11,7 @@ import numpy as np
 '''
 Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
 '''
-def pk(ref, hyp, k=None, boundary="1"):
+def pk(ref: np.array, hyp: np.array, k: int = 5, boundary: int = 1):
     """
     Compute the Pk metric for a pair of segmentations A segmentation
     is any sequence over a vocabulary of two items (e.g. "0", "1"),
@@ -24,33 +24,23 @@ def pk(ref, hyp, k=None, boundary="1"):
     '0.50'
     >>> '%.2f' % pk('0100'*100, '0100'*100, 2)
     '0.00'
-
-    :param ref: the reference segmentation
-    :type ref: str or list
-    :param hyp: the segmentation to evaluate
-    :type hyp: str or list
-    :param k: window size, if None, set to half of the average reference segment length
-    :type boundary: str or int or bool
-    :param boundary: boundary value
-    :type boundary: str or int or bool
-    :rtype: float
     """
 
     if k is None:
-        k = int(round(len(ref) / (ref.count(boundary) * 2.0)))
+        k = int(round(ref.shape[0] / (np.count_nonzero(ref[i : i + k] == boundary) * 2.0)))
 
-    err = 0
+    err = 0.0
     for i in range(len(ref) - k + 1):
-        r = ref[i : i + k].count(boundary) > 0
-        h = hyp[i : i + k].count(boundary) > 0
+        r = np.count_nonzero(ref[i : i + k] == boundary) > 0
+        h = np.count_nonzero(hyp[i : i + k] == boundary) > 0
         if r != h:
             err += 1
-    return err / (len(ref) - k + 1.0)
+    return err / (ref.shape[0] - k + 1.0)
 
 '''
 Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
 '''
-def windowdiff(seg1, seg2, k, boundary="1", weighted=False):
+def windowdiff(seg1: np.array, seg2: np.array, k: int = 5, boundary: int = 1, weighted: bool = False):
     """
     Compute the windowdiff score for a pair of segmentations.  A
     segmentation is any sequence over a vocabulary of two items
@@ -66,47 +56,49 @@ def windowdiff(seg1, seg2, k, boundary="1", weighted=False):
         '0.30'
         >>> '%.2f' % windowdiff(s2, s3, 3)
         '0.80'
-
-    :param seg1: a segmentation
-    :type seg1: str or list
-    :param seg2: a segmentation
-    :type seg2: str or list
-    :param k: window width
-    :type k: int
-    :param boundary: boundary value
-    :type boundary: str or int or bool
-    :param weighted: use the weighted variant of windowdiff
-    :type weighted: boolean
-    :rtype: float
     """
 
-    if len(seg1) != len(seg2):
+    if seg1.shape[0] != seg2.shape[0]:
         raise ValueError("Segmentations have unequal length")
-    if k > len(seg1):
+    if k > seg1.shape[0]:
         raise ValueError(
             "Window width k should be smaller or equal than segmentation lengths"
         )
-    wd = 0
-    for i in range(len(seg1) - k + 1):
-        ndiff = abs(seg1[i : i + k].count(boundary) - seg2[i : i + k].count(boundary))
+    wd = 0.0
+    for i in range(seg1.shape[0] - k + 1):
+        ndiff = abs(np.count_nonzero(seg1[i : i + k] == boundary) - np.count_nonzero(seg2[i : i + k] == boundary))
         if weighted:
             wd += ndiff
         else:
             wd += min(1, ndiff)
-    return wd / (len(seg1) - k + 1.0)
+    return wd / (seg1.shape[0] - k + 1.0)
 
 def validate(model, dataset):
-    pass
+    model.eval()
+    total_pk = 0.0
+    total_windowdiff = 0.0
+    with tqdm(desc='Validating', total=len(dataset)) as pbar:
+        for data in dataset:
+            pbar.update()
+            target = data['target']
+            target = target.long()
+            output = model(data['sentences'])
+            output_softmax = F.softmax(output, 1)
+            output_argmax = torch.argmax(output_softmax, dim=1)
+            total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy(), 5)
+            total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy(), 5)
+    return total_pk, total_windowdiff
 
-def train(model, num_epochs, dataset, optimizer):
+def train(model, num_epochs, train_set, dev_set, optimizer):
     model.train()
     total_loss = 0.0
     best_loss = float('inf')
+    val_freq = 5
     model_save_path = 'saved_model'
     for i in range(num_epochs):
         print("Epoch {}:".format(i + 1))
-        with tqdm(desc='Training', total=len(dataset)) as pbar:
-            for data in dataset:
+        with tqdm(desc='Training', total=len(train_set)) as pbar:
+            for data in train_set:
                 pbar.update()
                 model.zero_grad()
                 output = model(data['sentences'])
@@ -117,8 +109,11 @@ def train(model, num_epochs, dataset, optimizer):
                 optimizer.step()
                 total_loss += loss
                 pbar.set_description('Training, loss={:.4}'.format(loss))
+                if (i + 1) % val_freq == 0:
+                    pk, windowdiff = validate(model, dev_set)
+                    print("Pk: {}, WindowDiff: {}", pk, windowdiff)
 
-        total_loss = total_loss / len(dataset)
+        total_loss = total_loss / len(train_set)
         print("Total loss: " + str(total_loss))
         if total_loss < best_loss:
             best_loss = total_loss
@@ -145,11 +140,16 @@ def main():
     word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
     # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    train_dataset = SegmentationDataset('data', word2vecModel)
+    train_path = 'train_data'
+    train_dataset = SegmentationDataset(train_path, word2vecModel)
     # train_dl = DataLoader(train_dataset)
+
+    dev_path = 'val_data'
+    dev_dataset = SegmentationDataset(dev_path, word2vecModel)
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 10, train_dataset, optimizer)
+    train(model, 10, train_dataset, dev_dataset, optimizer)
 
-main()
+if __name__ == '__main__':
+    main()
