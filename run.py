@@ -4,6 +4,7 @@ from baseline import Baseline
 from metrics import pk, windowdiff
 import io
 import torch
+import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 from tqdm import tqdm
@@ -28,10 +29,12 @@ def validate(model, dataset):
     return total_pk / len(dataset), total_windowdiff / len(dataset)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
+    print()
+    print("Starting training...")
     model.train()
     total_loss = 0.0
     best_loss = float('inf')
-    val_freq = 5
+    val_freq = 1
     model_save_path = 'saved_model'
     for i in range(num_epochs):
         print("Epoch {}:".format(i + 1))
@@ -47,12 +50,12 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
                 optimizer.step()
                 total_loss += loss
                 pbar.set_description('Training, loss={:.4}'.format(loss))
-                if (i + 1) % val_freq == 0:
-                    pk, windowdiff = validate(model, dev_set)
-                    print("Pk: {}, WindowDiff: {}", pk, windowdiff)
+        if (i + 1) % val_freq == 0:
+            pk, windowdiff = validate(model, dev_set)
+            print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
 
         total_loss = total_loss / len(train_set)
-        print("Total loss: " + str(total_loss))
+        print("Total loss: {}".format(total_loss))
         if total_loss < best_loss:
             best_loss = total_loss
             print('save currently the best model to [%s]' % model_save_path, file=sys.stderr)
@@ -73,11 +76,11 @@ def get_num_lines(file_path):
     return lines
 
 '''
-The following function was taken from https://fasttext.cc/docs/en/english-vectors.html
+The following function was adapted from https://fasttext.cc/docs/en/english-vectors.html
 '''
 def load_vectors(fname):
     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
-    n, d = map(int, fin.readline().split())
+    # n, d = map(int, fin.readline().split())
     data = {}
     print("Loading word2vec embeddings...")
     with tqdm(desc='Progress', total=get_num_lines(fname)) as pbar:
@@ -91,21 +94,21 @@ def main():
     word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
     # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    train_path = 'train_data'
+    train_path = 'wiki_727/dev'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
     # train_dl = DataLoader(train_dataset)
 
-    dev_path = 'val_data'
+    dev_path = 'wiki_50'
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     train(model, 10, train_dataset, dev_dataset, optimizer)
 
-    baseline_threshold = 5
+    baseline_threshold = 5.0
     baseline = Baseline(dev_dataset, baseline_threshold)
     base_pk, base_windowdiff = baseline.evaluate()
-    print("Baseline Pk: {}, Baseline Window Diff: {}", base_pk, base_windowdiff)
+    print("Baseline Pk: {}, Baseline Window Diff: {}".format(base_pk, base_windowdiff))
 
 if __name__ == '__main__':
     main()
