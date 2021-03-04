@@ -1,80 +1,15 @@
 from segmentation_dataset import SegmentationDataset
 from model import Model
 from baseline import Baseline
+from metrics import pk, windowdiff
 import io
 import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 from tqdm import tqdm
 import sys
+import mmap
 import numpy as np
-
-'''
-Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
-'''
-def pk(ref: np.array, hyp: np.array, k: int = None, boundary: int = 1):
-    """
-    Compute the Pk metric for a pair of segmentations A segmentation
-    is any sequence over a vocabulary of two items (e.g. "0", "1"),
-    where the specified boundary value is used to mark the edge of a
-    segmentation.
-
-    >>> '%.2f' % pk('0100'*100, '1'*400, 2)
-    '0.50'
-    >>> '%.2f' % pk('0100'*100, '0'*400, 2)
-    '0.50'
-    >>> '%.2f' % pk('0100'*100, '0100'*100, 2)
-    '0.00'
-    """
-
-    if k is None:
-        k = int(round(ref.shape[0] / (np.count_nonzero(ref == boundary) * 2.0)))
-
-    err = 0.0
-    for i in range(len(ref) - k + 1):
-        r = np.count_nonzero(ref[i : i + k] == boundary) > 0
-        h = np.count_nonzero(hyp[i : i + k] == boundary) > 0
-        if r != h:
-            err += 1
-    return err / (ref.shape[0] - k + 1.0)
-
-'''
-Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
-'''
-def windowdiff(ref: np.array, hyp: np.array, k: int = None, boundary: int = 1, weighted: bool = False):
-    """
-    Compute the windowdiff score for a pair of segmentations.  A
-    segmentation is any sequence over a vocabulary of two items
-    (e.g. "0", "1"), where the specified boundary value is used to
-    mark the edge of a segmentation.
-
-        >>> s1 = "000100000010"
-        >>> s2 = "000010000100"
-        >>> s3 = "100000010000"
-        >>> '%.2f' % windowdiff(s1, s1, 3)
-        '0.00'
-        >>> '%.2f' % windowdiff(s1, s2, 3)
-        '0.30'
-        >>> '%.2f' % windowdiff(s2, s3, 3)
-        '0.80'
-    """
-    if k is None:
-        k = int(round(ref.shape[0] / (np.count_nonzero(ref == boundary) * 2.0)))
-
-    if ref.shape[0] != hyp.shape[0]:
-        raise ValueError("Segmentations have unequal length")
-    if k > ref.shape[0]:
-        raise ValueError(
-            "Window width k should be smaller or equal than segmentation lengths"
-        )
-    wd = 0.0
-    for i in range(ref.shape[0] - k + 1):
-        ndiff = abs(np.count_nonzero(ref[i : i + k] == boundary) - np.count_nonzero(hyp[i : i + k] == boundary))
-        if weighted:
-            wd += ndiff
-        else:
-            wd += min(1, ndiff)
-    return wd / (ref.shape[0] - k + 1.0)
 
 def validate(model, dataset):
     model.eval()
@@ -126,6 +61,16 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
             # also save the optimizers' state
             torch.save(optimizer.state_dict(), model_save_path + '.optim')
 
+'''
+Adapted from https://blog.nelsonliu.me/2016/07/30/progress-bars-for-python-file-reading-with-tqdm/
+'''
+def get_num_lines(file_path):
+    fp = open(file_path, "r+")
+    buf = mmap.mmap(fp.fileno(), 0)
+    lines = 0
+    while buf.readline():
+        lines += 1
+    return lines
 
 '''
 The following function was taken from https://fasttext.cc/docs/en/english-vectors.html
@@ -134,9 +79,12 @@ def load_vectors(fname):
     fin = io.open(fname, 'r', encoding='utf-8', newline='\n', errors='ignore')
     n, d = map(int, fin.readline().split())
     data = {}
-    for line in fin:
-        tokens = line.rstrip().split(' ')
-        data[tokens[0]] = np.array(tokens[1:]).astype(np.float)
+    print("Loading word2vec embeddings...")
+    with tqdm(desc='Progress', total=get_num_lines(fname)) as pbar:
+        for line in fin:
+            pbar.update()
+            tokens = line.rstrip().split(' ')
+            data[tokens[0]] = np.array(tokens[1:]).astype(np.float)
     return data
 
 def main():
