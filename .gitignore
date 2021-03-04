@@ -1,3 +1,4 @@
 *.vec
 *.DS_Store
 wiki_727/*
+saved_model.optim
