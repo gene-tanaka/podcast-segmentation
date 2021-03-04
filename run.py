@@ -1,5 +1,6 @@
 from segmentation_dataset import SegmentationDataset
 from model import Model
+from baseline import Baseline
 import io
 import torch
 from torch.utils.data import DataLoader
@@ -152,6 +153,11 @@ def main():
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     train(model, 10, train_dataset, dev_dataset, optimizer)
+
+    baseline_threshold = 5
+    baseline = Baseline(dev_dataset, baseline_threshold)
+    base_pk, base_windowdiff = baseline.evaluate()
+    print("Baseline Pk: {}, Baseline Window Diff: {}", base_pk, base_windowdiff)
 
 if __name__ == '__main__':
     main()
