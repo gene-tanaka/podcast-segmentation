@@ -11,7 +11,7 @@ import numpy as np
 '''
 Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
 '''
-def pk(ref: np.array, hyp: np.array, k: int = 5, boundary: int = 1):
+def pk(ref: np.array, hyp: np.array, k: int = None, boundary: int = 1):
     """
     Compute the Pk metric for a pair of segmentations A segmentation
     is any sequence over a vocabulary of two items (e.g. "0", "1"),
@@ -27,7 +27,7 @@ def pk(ref: np.array, hyp: np.array, k: int = 5, boundary: int = 1):
     """
 
     if k is None:
-        k = int(round(ref.shape[0] / (np.count_nonzero(ref[i : i + k] == boundary) * 2.0)))
+        k = int(round(ref.shape[0] / (np.count_nonzero(ref == boundary) * 2.0)))
 
     err = 0.0
     for i in range(len(ref) - k + 1):
@@ -40,7 +40,7 @@ def pk(ref: np.array, hyp: np.array, k: int = 5, boundary: int = 1):
 '''
 Adapted from nltk.metrics.segmentation https://www.nltk.org/_modules/nltk/metrics/segmentation.html
 '''
-def windowdiff(seg1: np.array, seg2: np.array, k: int = 5, boundary: int = 1, weighted: bool = False):
+def windowdiff(ref: np.array, hyp: np.array, k: int = None, boundary: int = 1, weighted: bool = False):
     """
     Compute the windowdiff score for a pair of segmentations.  A
     segmentation is any sequence over a vocabulary of two items
@@ -57,21 +57,23 @@ def windowdiff(seg1: np.array, seg2: np.array, k: int = 5, boundary: int = 1, we
         >>> '%.2f' % windowdiff(s2, s3, 3)
         '0.80'
     """
+    if k is None:
+        k = int(round(ref.shape[0] / (np.count_nonzero(ref == boundary) * 2.0)))
 
-    if seg1.shape[0] != seg2.shape[0]:
+    if ref.shape[0] != hyp.shape[0]:
         raise ValueError("Segmentations have unequal length")
-    if k > seg1.shape[0]:
+    if k > ref.shape[0]:
         raise ValueError(
             "Window width k should be smaller or equal than segmentation lengths"
         )
     wd = 0.0
-    for i in range(seg1.shape[0] - k + 1):
-        ndiff = abs(np.count_nonzero(seg1[i : i + k] == boundary) - np.count_nonzero(seg2[i : i + k] == boundary))
+    for i in range(ref.shape[0] - k + 1):
+        ndiff = abs(np.count_nonzero(ref[i : i + k] == boundary) - np.count_nonzero(hyp[i : i + k] == boundary))
         if weighted:
             wd += ndiff
         else:
             wd += min(1, ndiff)
-    return wd / (seg1.shape[0] - k + 1.0)
+    return wd / (ref.shape[0] - k + 1.0)
 
 def validate(model, dataset):
     model.eval()
@@ -85,8 +87,8 @@ def validate(model, dataset):
             output = model(data['sentences'])
             output_softmax = F.softmax(output, 1)
             output_argmax = torch.argmax(output_softmax, dim=1)
-            total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy(), 5)
-            total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy(), 5)
+            total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
+            total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
     return total_pk / len(dataset), total_windowdiff / len(dataset)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
