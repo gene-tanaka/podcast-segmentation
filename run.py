@@ -37,7 +37,7 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
     val_freq = 1
     model_save_path = 'saved_model'
     for i in range(num_epochs):
-        print("Epoch {}:".format(i + 1))
+        print("Epoch {}/{}:".format(i + 1, num_epochs))
         with tqdm(desc='Training', total=len(train_set)) as pbar:
             for data in train_set:
                 pbar.update()
@@ -50,19 +50,18 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
                 optimizer.step()
                 total_loss += loss
                 pbar.set_description('Training, loss={:.4}'.format(loss))
-        if (i + 1) % val_freq == 0:
-            pk, windowdiff = validate(model, dev_set)
-            print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
-
         total_loss = total_loss / len(train_set)
         print("Total loss: {}".format(total_loss))
         if total_loss < best_loss:
             best_loss = total_loss
             print('save currently the best model to [%s]' % model_save_path, file=sys.stderr)
-            # model.save(model_save_path)
             torch.save(model, model_save_path)
             # also save the optimizers' state
             torch.save(optimizer.state_dict(), model_save_path + '.optim')
+        if (i + 1) % val_freq == 0:
+            pk, windowdiff = validate(model, dev_set)
+            print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
+            model.train()
 
 '''
 Adapted from https://blog.nelsonliu.me/2016/07/30/progress-bars-for-python-file-reading-with-tqdm/
@@ -103,7 +102,7 @@ def main():
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 10, train_dataset, dev_dataset, optimizer)
+    train(model, 5, train_dataset, dev_dataset, optimizer)
 
     baseline_threshold = 5.0
     baseline = Baseline(dev_dataset, baseline_threshold)

@@ -12,6 +12,7 @@ class SegmentationDataset(Dataset):
         self.targets = []
         all_objects = Path(root_dir).glob('**/*')
         self.filenames = [str(p) for p in all_objects if p.is_file() and str(p).split("/")[-1] != '.DS_Store']
+        # print(self.filenames)
         passages = []
         print()
         print("Reading raw data...")

@@ -23,10 +23,13 @@ def pk(ref: np.array, hyp: np.array, k: int = None, boundary: int = 1):
 
     err = 0.0
     for i in range(len(ref) - k + 1):
-        r = np.count_nonzero(ref[i : i + k] == boundary) > 0
-        h = np.count_nonzero(hyp[i : i + k] == boundary) > 0
+        r = np.count_nonzero(ref[i : i + k] == boundary)
+        h = np.count_nonzero(hyp[i : i + k] == boundary)
+        # print(r)
+        # print(h)
         if r != h:
             err += 1
+    # print(ref.shape[0])
     return err / (ref.shape[0] - k + 1.0)
 
 '''
