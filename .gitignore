@@ -1,4 +1,7 @@
 *.vec
 *.DS_Store
 wiki_727/*
+wiki_50/*
+train_data/*
 saved_model.optim
+saved_model
