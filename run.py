@@ -95,17 +95,19 @@ def main():
 
     train_path = 'train_data'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
-    # train_dl = DataLoader(train_dataset)
+
+    train_dl = DataLoader(train_dataset, batch_size=20, num_workers=6, shuffle=True)
 
     dev_path = 'wiki_50'
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
+    dev_dl = DataLoader(dev_dataset, batch_size=20, num_workers=6, shuffle=True)
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 5, train_dataset, dev_dataset, optimizer)
+    train(model, 5, train_dl, dev_dl, optimizer)
 
     baseline_threshold = 5.0
-    baseline = Baseline(dev_dataset, baseline_threshold)
+    baseline = Baseline(dev_dl, baseline_threshold)
     base_pk, base_windowdiff = baseline.evaluate()
     print("Baseline Pk: {}, Baseline Window Diff: {}".format(base_pk, base_windowdiff))
 
