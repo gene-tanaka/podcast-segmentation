@@ -13,6 +13,7 @@ class SegmentationDataset(Dataset):
         all_objects = Path(root_dir).glob('**/*')
         self.filenames = [str(p) for p in all_objects if p.is_file() and str(p).split("/")[-1] != '.DS_Store']
         # print(self.filenames)
+        self.dataTensors = []
         passages = []
         print()
         print("Reading raw data...")
@@ -46,23 +47,33 @@ class SegmentationDataset(Dataset):
                     self.max_len_sentence = max(self.max_len_sentence, len(sentence.split(' ')))
                 example += [PAD_STR]*(self.max_len_passage - len(example))
                 self.examples.append(example)
+        self.getAllTensors()
     
     def __len__(self):
         return len(self.examples)
     
     def __getitem__(self, idx):
-        ret_vals = {}
-        sentence_tensors = []
-        ret_vals['target'] = torch.Tensor(self.targets[idx])
-        for sentence in self.examples[idx]:
-            sentence_embedding = []
-            for word in sentence.split(' '):
-                if word in self.word2Vec:
-                    sentence_embedding.append(torch.from_numpy(self.word2Vec[word].reshape(1, 300)))
-                else:
-                    sentence_embedding.append(torch.from_numpy(self.word2Vec['UNK'].reshape(1, 300)))
-            sentence_embedding += [torch.zeros(1,300)]*(self.max_len_sentence - len(sentence_embedding))
-            sentence_tensors.append(torch.stack(sentence_embedding))
+        return  self.dataTensors[idx]
 
-        ret_vals['sentences'] = torch.squeeze(torch.stack(sentence_tensors, dim=0))
-        return ret_vals
+    def getAllTensors(self):
+        print('Preprocessing data...')
+        with tqdm(desc='Progress', total=len(self)) as pbar:
+            for idx in range(len(self.examples)):
+                pbar.update()
+                ret_vals = {}
+                sentence_tensors = []
+                ret_vals['target'] = torch.Tensor(self.targets[idx])
+                for sentence in self.examples[idx]:
+                    sentence_embedding = []
+                    for word in sentence.split(' '):
+                        if word in self.word2Vec:
+                            sentence_embedding.append(torch.from_numpy(self.word2Vec[word].reshape(1, 300)))
+                        else:
+                            sentence_embedding.append(torch.from_numpy(self.word2Vec['UNK'].reshape(1, 300)))
+                    sentence_embedding += [torch.zeros(1,300)]*(self.max_len_sentence - len(sentence_embedding))
+                    sentence_tensors.append(torch.stack(sentence_embedding))
+
+                ret_vals['sentences'] = torch.squeeze(torch.stack(sentence_tensors, dim=0))
+                self.dataTensors.append(ret_vals)
+        # return ret_vals
+
