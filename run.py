@@ -17,11 +17,11 @@ def validate(model, dataset):
     total_pk = 0.0
     total_windowdiff = 0.0
     with tqdm(desc='Validating', total=len(dataset)) as pbar:
-        for data in dataset:
+        for i_batch, data in enumerate(dataset):
             pbar.update()
-            target = data['target']
+            target = data['target'][i_batch]
             target = target.long()
-            output = model(data['sentences'])
+            output = model(data['sentences'][i_batch, :, :, :])
             output_softmax = F.softmax(output, 1)
             output_argmax = torch.argmax(output_softmax, dim=1)
             total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
@@ -39,11 +39,16 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
     for i in range(num_epochs):
         print("Epoch {}/{}:".format(i + 1, num_epochs))
         with tqdm(desc='Training', total=len(train_set)) as pbar:
-            for data in train_set:
+            for _, data in enumerate(train_set):
                 pbar.update()
                 model.zero_grad()
-                output = model(data['sentences'])
-                target = data['target']
+                # output = model(data['sentences'][i_batch, :, :, :])
+                # print(data['sentences'].shape)
+                # print(torch.flatten(data['sentences'], start_dim=0, end_dim=1).shape)
+                output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
+                # target = data['target'][i_batch]
+                target = torch.flatten(data['target'], start_dim=0, end_dim=1)
+                # print(target.shape)
                 target = target.long()
                 loss = model.loss(output, target)
                 loss.backward()
@@ -90,21 +95,23 @@ def load_vectors(fname):
     return data
 
 def main():
-    word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-    # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
+    # word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+    word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    train_path = 'train_data'
+    # train_path = 'train_data'
+    train_path = 'wiki_50'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
-
-    train_dl = DataLoader(train_dataset, batch_size=20, num_workers=6, shuffle=True)
+    # train_dl = DataLoader(train_dataset, batch_size=20, num_workers=6, shuffle=True)
+    train_dl = DataLoader(train_dataset, batch_size=4, shuffle=True)
 
     dev_path = 'wiki_50'
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
-    dev_dl = DataLoader(dev_dataset, batch_size=20, num_workers=6, shuffle=True)
+    # dev_dl = DataLoader(dev_dataset, batch_size=20, num_workers=6, shuffle=True)
+    dev_dl = DataLoader(dev_dataset, batch_size=4, shuffle=True)
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 5, train_dl, dev_dl, optimizer)
+    train(model, 2, train_dl, dev_dl, optimizer)
 
     baseline_threshold = 5.0
     baseline = Baseline(dev_dl, baseline_threshold)
