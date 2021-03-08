@@ -12,20 +12,24 @@ import sys
 import mmap
 import numpy as np
 
-def validate(model, dataset):
+def validate(model, dataset, indices):
     model.eval()
     total_pk = 0.0
     total_windowdiff = 0.0
-    with tqdm(desc='Validating', total=len(dataset)) as pbar:
-        for i_batch, data in enumerate(dataset):
-            pbar.update()
-            target = data['target'][i_batch]
-            target = target.long()
-            output = model(data['sentences'][i_batch, :, :, :])
-            output_softmax = F.softmax(output, 1)
-            output_argmax = torch.argmax(output_softmax, dim=1)
-            total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
-            total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
+    with tqdm(desc='Validating', total=5) as pbar:
+        for i, data in enumerate(dataset):
+            if i not in indices:
+                # print("not doing this one ")
+                continue
+            else:
+                pbar.update()
+                target = torch.flatten(data['target'], start_dim=0, end_dim=1)
+                target = target.long()
+                output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
+                output_softmax = F.softmax(output, 1)
+                output_argmax = torch.argmax(output_softmax, dim=1)
+                total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
+                total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
     return total_pk / len(dataset), total_windowdiff / len(dataset)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
@@ -38,24 +42,30 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
     model_save_path = 'saved_model'
     for i in range(num_epochs):
         print("Epoch {}/{}:".format(i + 1, num_epochs))
-        with tqdm(desc='Training', total=len(train_set)) as pbar:
-            for _, data in enumerate(train_set):
-                pbar.update()
-                model.zero_grad()
-                # output = model(data['sentences'][i_batch, :, :, :])
-                # print(data['sentences'].shape)
-                # print(torch.flatten(data['sentences'], start_dim=0, end_dim=1).shape)
-                output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
-                # target = data['target'][i_batch]
-                target = torch.flatten(data['target'], start_dim=0, end_dim=1)
-                # print(target.shape)
-                target = target.long()
-                loss = model.loss(output, target)
-                loss.backward()
-                optimizer.step()
-                total_loss += loss
-                pbar.set_description('Training, loss={:.4}'.format(loss))
-        total_loss = total_loss / len(train_set)
+        with tqdm(desc='Training', total=5) as pbar:
+            indices = [np.random.randint(0, len(train_set)) for i in range(5)]
+            for i, data in enumerate(train_set):
+                if i not in indices:
+                    # print("not doing this one ")
+                    continue
+                else:
+                    # data = train_set[i]
+                    pbar.update()
+                    model.zero_grad()
+                    # output = model(data['sentences'][i_batch, :, :, :])
+                    # print(data['sentences'].shape)
+                    # print(torch.flatten(data['sentences'], start_dim=0, end_dim=1).shape)
+                    output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
+                    # target = data['target'][i_batch]
+                    target = torch.flatten(data['target'], start_dim=0, end_dim=1)
+                    # print(target.shape)
+                    target = target.long()
+                    loss = model.loss(output, target)
+                    loss.backward()
+                    optimizer.step()
+                    total_loss += loss
+                    pbar.set_description('Training, loss={:.4}'.format(loss))
+        total_loss = total_loss / 5
         print("Total loss: {}".format(total_loss))
         if total_loss < best_loss:
             best_loss = total_loss
@@ -63,11 +73,7 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
             torch.save(model, model_save_path)
             # also save the optimizers' state
             torch.save(optimizer.state_dict(), model_save_path + '.optim')
-        if (i + 1) % val_freq == 0:
-            pk, windowdiff = validate(model, dev_set)
-            print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
-            model.train()
-
+    return indices
 '''
 Adapted from https://blog.nelsonliu.me/2016/07/30/progress-bars-for-python-file-reading-with-tqdm/
 '''
@@ -111,7 +117,9 @@ def main():
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    train(model, 2, train_dl, dev_dl, optimizer)
+    indices = train(model, 2, train_dl, dev_dl, optimizer)
+    pk, windowdiff = validate(model, dev_dl, indices)
+    print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
 
     baseline_threshold = 5.0
     baseline = Baseline(dev_dl, baseline_threshold)
