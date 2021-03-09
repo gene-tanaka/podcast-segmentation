@@ -35,6 +35,6 @@ class Baseline():
 				pred = self.all_labels[k]
 				total_pk += pk(target.detach().numpy(), np.array(pred))
 				total_windowdiff += windowdiff(target.detach().numpy(), np.array(pred))
-		print(total_pk)
-		print(total_windowdiff)
+		# print(total_pk)
+		# print(total_windowdiff)
 		return total_pk / self.data_len, total_windowdiff / self.data_len

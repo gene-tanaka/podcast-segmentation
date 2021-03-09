@@ -1,7 +1,8 @@
 from segmentation_dataset import SegmentationDataset
 from model import Model
 from baseline import Baseline
-from metrics import pk, windowdiff
+# from metrics import pk, windowdiff
+from nltk import pk, windowdiff
 import io
 import torch
 import torch.nn.functional as F
@@ -18,19 +19,21 @@ def validate(model, dataset, indices):
     total_windowdiff = 0.0
     with tqdm(desc='Validating', total=5) as pbar:
         for i, data in enumerate(dataset):
-            if i not in indices:
-                # print("not doing this one ")
-                continue
-            else:
+            if i in indices:
                 pbar.update()
                 target = torch.flatten(data['target'], start_dim=0, end_dim=1)
                 target = target.long()
                 output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
                 output_softmax = F.softmax(output, 1)
-                output_argmax = torch.argmax(output_softmax, dim=1)
-                total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
-                total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
-    return total_pk / len(dataset), total_windowdiff / len(dataset)
+                # output_argmax = torch.argmax(output_softmax, dim=1)
+                target_list = target.tolist()
+                output_list = torch.argmax(output_softmax, dim=1).tolist()
+                k = int(round(len(target_list) / (target_list.count(1) * 2.0)))
+                total_pk += pk(target_list, output_list, k=k, boundary=1)
+                total_windowdiff += windowdiff(target_list, output_list, k=k, boundary=1)
+                # total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
+                # total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
+    return total_pk / len(indices), total_windowdiff / len(indices)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
     print()
@@ -38,7 +41,6 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
     model.train()
     total_loss = 0.0
     best_loss = float('inf')
-    val_freq = 1
     model_save_path = 'saved_model'
     for i in range(num_epochs):
         print("Epoch {}/{}:".format(i + 1, num_epochs))
@@ -101,8 +103,8 @@ def load_vectors(fname):
     return data
 
 def main():
-    # word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-    word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
+    word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+    # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
     # train_path = 'train_data'
     train_path = 'wiki_50'
