@@ -1,0 +1,25 @@
+========,1,preface.
+Thioacetic acid is an organosulfur compound with the molecular formula CHCOSH.
+It is a yellow coloured liquid with a strong thiol-like odor.
+It is used in organic synthesis for the introduction of thiol groups in molecules
+========,2,Synthesis and properties.
+Thioacetic acid is prepared by the reaction of acetic anhydride with hydrogen sulfide:
+It has also been produced by the action of phosphorus pentasulfide on glacial acetic acid, followed by distillation.
+Thioacetic acid is typically contaminated by acetic acid.
+The compound exists exclusively as the thiol tautomer, consistent with the strength of the C=O double bond.
+Reflecting the influence of hydrogen-bonding, the boiling point (93 °C) and melting points are 20 and 75K lower than those for acetic acid.
+========,2,Reactivity.
+========,3,Acidity.
+With a pK near 3.4, thioacetic acid is about 15x more acidic than acetic acid.
+The conjugate base is thioacetate:
+In neutral water, thioacetic acid is fully ionized.
+========,3,Reactivity of thioacetate.
+Most of the reactivity of thioacetic acid arises from the conjugate base, thioacetate.
+Salts of this anion, e.g.
+potassium thioacetate, are used to generate thioacetate esters.
+Thioacetate esters undergo hydrolysis to give thiols.
+A typical method for preparing a thiol from an alkyl halide using thioacetic acid proceeds in four discrete steps, some of which can be conducted sequentially in the same flask:
+In an application that illustrates the use of its radical behavior, thioacetic acid is used with AIBN in a free radical mediated nucleophilic addition to an exocyclic alkene forming a thioester:
+***LIST***.
+Salts of thioacetic acid such as potassium thioacetate can be used to do one-step conversion of aryl nitrates to aryl acetamides.
+This is particularly useful in pharmaceutical preparations, e.g.
