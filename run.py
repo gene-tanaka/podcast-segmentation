@@ -18,10 +18,7 @@ def validate(model, dataset, indices):
     total_windowdiff = 0.0
     with tqdm(desc='Validating', total=5) as pbar:
         for i, data in enumerate(dataset):
-            if i not in indices:
-                # print("not doing this one ")
-                continue
-            else:
+            if i in indices:
                 pbar.update()
                 target = torch.flatten(data['target'], start_dim=0, end_dim=1)
                 target = target.long()
@@ -38,7 +35,6 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
     model.train()
     total_loss = 0.0
     best_loss = float('inf')
-    val_freq = 1
     model_save_path = 'saved_model'
     for i in range(num_epochs):
         print("Epoch {}/{}:".format(i + 1, num_epochs))
@@ -101,11 +97,11 @@ def load_vectors(fname):
     return data
 
 def main():
-    # word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-    word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
+    word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+    # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
     # train_path = 'train_data'
-    train_path = 'wiki_50'
+    train_path = 'train_data'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
     # train_dl = DataLoader(train_dataset, batch_size=20, num_workers=6, shuffle=True)
     train_dl = DataLoader(train_dataset, batch_size=4, shuffle=True)
@@ -117,7 +113,7 @@ def main():
 
     model = Model()
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
-    indices = train(model, 2, train_dl, dev_dl, optimizer)
+    indices = train(model, 5, train_dl, dev_dl, optimizer)
     pk, windowdiff = validate(model, dev_dl, indices)
     print("Pk: {}, WindowDiff: {}".format(pk, windowdiff))
 
