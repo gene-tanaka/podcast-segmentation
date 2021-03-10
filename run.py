@@ -1,7 +1,6 @@
 from segmentation_dataset import SegmentationDataset
 from model import Model
 from baseline import Baseline
-# from metrics import pk, windowdiff
 from nltk import pk, windowdiff
 import io
 import torch
@@ -25,14 +24,11 @@ def validate(model, dataset, indices):
                 target = target.long()
                 output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
                 output_softmax = F.softmax(output, 1)
-                # output_argmax = torch.argmax(output_softmax, dim=1)
                 target_list = target.tolist()
                 output_list = torch.argmax(output_softmax, dim=1).tolist()
                 k = int(round(len(target_list) / (target_list.count(1) * 2.0)))
                 total_pk += pk(target_list, output_list, k=k, boundary=1)
                 total_windowdiff += windowdiff(target_list, output_list, k=k, boundary=1)
-                # total_pk += pk(target.detach().numpy(), output_argmax.detach().numpy())
-                # total_windowdiff += windowdiff(target.detach().numpy(), output_softmax.detach().numpy())
     return total_pk / len(indices), total_windowdiff / len(indices)
 
 def train(model, num_epochs, train_set, dev_set, optimizer):
@@ -55,12 +51,9 @@ def train(model, num_epochs, train_set, dev_set, optimizer):
                     pbar.update()
                     model.zero_grad()
                     # output = model(data['sentences'][i_batch, :, :, :])
-                    # print(data['sentences'].shape)
-                    # print(torch.flatten(data['sentences'], start_dim=0, end_dim=1).shape)
                     output = model(torch.flatten(data['sentences'], start_dim=0, end_dim=1))
                     # target = data['target'][i_batch]
                     target = torch.flatten(data['target'], start_dim=0, end_dim=1)
-                    # print(target.shape)
                     target = target.long()
                     loss = model.loss(output, target)
                     loss.backward()
@@ -106,15 +99,12 @@ def main():
     word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
     # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    # train_path = 'train_data'
     train_path = 'train_data'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
-    # train_dl = DataLoader(train_dataset, batch_size=20, num_workers=6, shuffle=True)
     train_dl = DataLoader(train_dataset, batch_size=4, shuffle=True)
 
     dev_path = 'wiki_50'
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
-    # dev_dl = DataLoader(dev_dataset, batch_size=20, num_workers=6, shuffle=True)
     dev_dl = DataLoader(dev_dataset, batch_size=4, shuffle=True)
 
     model = Model()
