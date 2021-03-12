@@ -106,8 +106,8 @@ def main():
     dev_path = 'wiki_50'
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
     dev_dl = DataLoader(dev_dataset, batch_size=4, shuffle=True)
-    print("Running model without attention... ")
-    model = Model(attention=False)
+    print("Running model with attention... ")
+    model = Model(attention=True)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     indices = train(model, 5, train_dl, dev_dl, optimizer)
     pk, windowdiff = validate(model, dev_dl, indices)
