@@ -96,10 +96,10 @@ def load_vectors(fname):
     return data
 
 def main():
-    word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
-    # word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
+    # word2vecModel = load_vectors('wiki-news-300d-1M-subword.vec')
+    word2vecModel = {"UNK": np.zeros((1,300))} # dummy data
 
-    train_path = 'train_data'
+    train_path = 'wiki_50'
     train_dataset = SegmentationDataset(train_path, word2vecModel)
     train_dl = DataLoader(train_dataset, batch_size=4, shuffle=True)
 
@@ -107,7 +107,7 @@ def main():
     dev_dataset = SegmentationDataset(dev_path, word2vecModel)
     dev_dl = DataLoader(dev_dataset, batch_size=4, shuffle=True)
 
-    model = Model()
+    model = Model(attention=True)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     indices = train(model, 5, train_dl, dev_dl, optimizer)
     pk, windowdiff = validate(model, dev_dl, indices)
