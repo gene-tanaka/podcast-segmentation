@@ -1,0 +1,24 @@
+========,1,preface.
+The Charing Cross (Northern line) tube crash occurred at 08:32 hours on 10 March 1938, when two Northern line trains collided near Charing Cross (now Embankment).
+Twelve people were slightly injured.
+The cause was a wrong-side failure of the automatic signals; an electrician had rewired a faulty signal, S94B, so that it showed green too soon after a preceding train had passed.
+Although the British Rail accident at Clapham Junction in 1988 bore resemblances to this very rare type of accident, there were significant differences.
+In fact the ramifications of this accident were to cause a major rethink of British Railway Signalling.
+========,2,Signal fault.
+During the morning rush hour, the northbound departure signal at Waterloo station was operating intermittently, in that sometimes it turned green but sometimes it didn't, forcing the driver to proceed under the 'stop and proceed' rule applicable to underground working after a five-minute wait.
+The signal engineer for the area was unavailable and so an engineer was summoned from Kennington station.
+When he arrived, he gave instructions for the platform staff to hold the next train even if the signal turned green, while he entered the tunnel and looked for the fault.
+========,2,Collision.
+He quickly found a signalling relay that although it was de-energised (known as 'down' in railway signalling speak), there was nevertheless a voltage across a normally closed contact (known as a 'back contact' in railway signalling speak), indicating that the contact was faulty.
+As a temporary measure to get the trains moving, he shorted out the contact with a piece of wire terminated in two crocodile clips.
+The engineer was mindful of the fact that he had substantially shortened the overlap distance of the signal.
+When he arrived back at the station he instructed the platform staff to hold every train for one minute after the signal turned green.
+He then went in search of a second wire with the intention of temporarily connecting the faulty contact to an unused contact on the same relay restoring normal operation.
+It was while he was searching that the collision took place just outside Charing Cross station.
+========,2,Inquiry.
+In the inquiry, the signal engineer was held wholly to blame, because although his temporary fix was reasonable under the circumstances, the instructions that he gave to the platform staff were incorrect.
+The holding of the train for one minute after the green aspect was reasonable, but the driver should have been instructed to, "... proceed at caution and be prepared to stop short of any obstruction".
+The absence of the last instruction meant that the driver would proceed at full speed and be unable to stop short of another train.
+========,2,Safety improvement.
+As a result, the berth circuit (not to be confused with the berth track circuit) was developed whose purpose was to detect contacts that were closed when they shouldn't have been and to rupture the relay supply fuse if such a condition was detected forcing the controlled signals to show an unchanging danger indication.
+The berth circuit was retrofitted to every automatic signalling system in Britain.
